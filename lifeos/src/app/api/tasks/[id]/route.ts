@@ -8,8 +8,8 @@ const updateSchema = z.object({
   description: z.string().max(2000).optional(),
   status:      z.enum(['todo', 'in_progress', 'done']).optional(),
   priority:    z.enum(['low', 'medium', 'high']).optional(),
-  due_date:    z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
-  goal_id:     z.string().uuid().nullable().optional(),
+  due_date:    z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  goal_id:     z.string().uuid().optional(),
 })
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
