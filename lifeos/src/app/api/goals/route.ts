@@ -1,13 +1,6 @@
-import { requireAuth, validateBody } from '@/lib/api/middleware'
-import { errors } from '@/lib/api/errors'
-import { getGoals, createGoal } from '@/services/goals.service'
-import { z } from 'zod'
-
-const createSchema = z.object({
-  title:       z.string().min(1).max(150),
-  description: z.string().max(1000).optional(),
-  target_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-})
+import { requireAuth } from "@/lib/api/middleware"
+import { errors } from "@/lib/api/errors"
+import { getGoals, createGoal } from "@/services/goals.service"
 
 export async function GET() {
   const { user, error } = await requireAuth()
@@ -19,12 +12,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { user, error: authErr } = await requireAuth()
-  if (authErr) return authErr
-  const { data, error: valErr } = await validateBody(request, createSchema)
-  if (valErr) return valErr
+  const { user, error } = await requireAuth()
+  if (error) return error
   try {
-    const goal = await createGoal(user!.id, data)
+    const body = await request.json() as Record<string, unknown>
+    const goal = await createGoal(user!.id, body as any)
     return Response.json({ data: goal }, { status: 201 })
   } catch { return errors.internal() }
 }

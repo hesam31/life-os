@@ -1,17 +1,15 @@
-import { z } from 'zod'
-import { getSupabaseServerClient } from '@/services/supabase/server'
-import { errors } from '@/lib/api/errors'
-
-const schema = z.object({ email: z.string().email() })
+import { getSupabaseServerClient } from "@/services/supabase/server"
+import { errors } from "@/lib/api/errors"
 
 export async function POST(request: Request) {
-  const body   = await request.json() as unknown
-  const result = schema.safeParse(body)
-  if (!result.success) return errors.validation('Invalid email')
-
-  const supabase = await getSupabaseServerClient()
-  await supabase.auth.resetPasswordForEmail(result.data.email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password`,
-  })
-  return Response.json({ data: { message: 'Check your email for a reset link.' } })
+  try {
+    const body = await request.json() as Record<string, string>
+    const email = body["email"] as string
+    if (!email) return errors.validation("Email required")
+    const supabase = await getSupabaseServerClient()
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
+    })
+    return Response.json({ data: { message: "Check your email for a reset link." } })
+  } catch { return errors.internal() }
 }

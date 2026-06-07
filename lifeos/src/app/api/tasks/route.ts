@@ -1,39 +1,25 @@
-import { requireAuth, validateBody } from '@/lib/api/middleware'
-import { errors } from '@/lib/api/errors'
-import { getTasks, createTask } from '@/services/tasks.service'
-import { z } from 'zod'
-
-const createSchema = z.object({
-  title:       z.string().min(1).max(200),
-  description: z.string().max(2000).optional(),
-  priority:    z.enum(['low', 'medium', 'high']).optional(),
-  due_date:    z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  goal_id:     z.string().uuid().optional(),
-})
-
-const filterSchema = z.object({
-  status:   z.enum(['todo', 'in_progress', 'done']).optional(),
-  priority: z.enum(['low', 'medium', 'high']).optional(),
-})
+import { requireAuth } from "@/lib/api/middleware"
+import { errors } from "@/lib/api/errors"
+import { getTasks, createTask } from "@/services/tasks.service"
 
 export async function GET(request: Request) {
   const { user, error } = await requireAuth()
   if (error) return error
   const { searchParams } = new URL(request.url)
-  const filters = filterSchema.parse(Object.fromEntries(searchParams))
+  const status = searchParams.get("status") as any
+  const priority = searchParams.get("priority") as any
   try {
-    const tasks = await getTasks(user!.id, filters)
+    const tasks = await getTasks(user!.id, { status, priority })
     return Response.json({ data: tasks })
   } catch { return errors.internal() }
 }
 
 export async function POST(request: Request) {
-  const { user, error: authErr } = await requireAuth()
-  if (authErr) return authErr
-  const { data, error: valErr } = await validateBody(request, createSchema)
-  if (valErr) return valErr
+  const { user, error } = await requireAuth()
+  if (error) return error
   try {
-    const task = await createTask(user!.id, data)
+    const body = await request.json() as Record<string, unknown>
+    const task = await createTask(user!.id, body as any)
     return Response.json({ data: task }, { status: 201 })
   } catch { return errors.internal() }
 }
