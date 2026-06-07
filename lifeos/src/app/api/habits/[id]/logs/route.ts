@@ -14,7 +14,10 @@ export async function POST(request: Request, { params }: { params: { id: string 
   const { data, error: valErr } = await validateBody(request, logSchema)
   if (valErr) return valErr
   try {
-    const log = await logHabit(user!.id, params.id, data)
+    const log = await logHabit(user!.id, params.id, {
+      completed_value: data.completed_value ?? 1,
+      note: data.note,
+    })
     return Response.json({ data: log }, { status: 201 })
   } catch { return errors.internal() }
 }
