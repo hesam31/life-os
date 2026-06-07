@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-width:           240px;
+  --sidebar-width-collapsed: 64px;
+  --topbar-height:           56px;
+
+  /* Deep Midnight palette — light mode */
+  --color-bg-primary:    #ffffff;
+  --color-bg-secondary:  #f8f9fc;
+  --color-bg-tertiary:   #eef0f8;
+  --color-bg-sidebar:    #0f0f2d;
+  --color-bg-card:       #ffffff;
+
+  --color-accent:         #6366f1;
+  --color-accent-hover:   #4f46e5;
+  --color-accent-subtle:  #eef0ff;
+  --color-accent-muted:   #c4cbff;
+
+  --color-text-primary:   #0d1117;
+  --color-text-secondary: #4b5563;
+  --color-text-muted:     #9ca3af;
+  --color-text-inverse:   #f1f5f9;
+
+  --color-border:         #e5e7eb;
+  --color-border-strong:  #d1d5db;
+
+  --color-success:        #10b981;
+  --color-success-subtle: #d1fae5;
+  --color-warning:        #f59e0b;
+  --color-warning-subtle: #fef3c7;
+  --color-danger:         #ef4444;
+  --color-danger-subtle:  #fee2e2;
+}
+
+.dark {
+  --color-bg-primary:    #0d1526;
+  --color-bg-secondary:  #111d35;
+  --color-bg-tertiary:   #162040;
+  --color-bg-sidebar:    #07071a;
+  --color-bg-card:       #111d35;
+
+  --color-accent:         #818cf8;
+  --color-accent-hover:   #a5b4fc;
+  --color-accent-subtle:  #1e1b4b;
+  --color-accent-muted:   #3730a3;
+
+  --color-text-primary:   #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted:     #64748b;
+  --color-text-inverse:   #0d1117;
+
+  --color-border:         #1e2d4a;
+  --color-border-strong:  #2a3a5c;
+
+  --color-success:        #34d399;
+  --color-success-subtle: #064e3b;
+  --color-warning:        #fbbf24;
+  --color-warning-subtle: #451a03;
+  --color-danger:         #f87171;
+  --color-danger-subtle:  #450a0a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--color-bg-secondary);
+  color:            var(--color-text-primary);
+  margin:           0;
+  min-height:       100vh;
+}
+
+::selection {
+  background: var(--color-accent-muted);
+  color:      var(--color-text-primary);
+}
+
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--color-border-strong); border-radius: 9999px; }

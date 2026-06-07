@@ -1,0 +1,10 @@
+create index idx_habits_user_id_deleted_at on public.habits (user_id, deleted_at) where deleted_at is null;
+create index idx_habits_goal_id on public.habits (goal_id) where goal_id is not null and deleted_at is null;
+create index idx_habit_logs_habit_id_date on public.habit_logs (habit_id, logged_date desc);
+create index idx_habit_logs_user_id_date on public.habit_logs (user_id, logged_date desc);
+create index idx_tasks_user_id_status_priority on public.tasks (user_id, status, priority);
+create index idx_tasks_user_id_due_date_status on public.tasks (user_id, due_date, status) where status != 'done';
+create index idx_tasks_goal_id on public.tasks (goal_id) where goal_id is not null;
+create index idx_tasks_user_id_completed_at on public.tasks (user_id, completed_at desc) where completed_at is not null;
+create index idx_goals_user_id_status on public.goals (user_id, status, deleted_at) where deleted_at is null;
+create index idx_goals_user_id_target_date on public.goals (user_id, target_date asc) where deleted_at is null and status = 'active';
