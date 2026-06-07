@@ -10,7 +10,7 @@ const updateSchema = z.object({
   custom_days:  z.array(z.boolean()).length(7).optional(),
   target_value: z.number().positive().optional(),
   unit:         z.string().max(30).optional(),
-  goal_id:      z.string().uuid().nullable().optional(),
+  goal_id:      z.string().uuid().optional(),
 })
 
 export async function GET(_: Request, { params }: { params: { id: string } }) {
