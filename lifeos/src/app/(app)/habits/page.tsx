@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { getSupabaseServerClient } from '@/services/supabase/server'
 import { getHabits } from '@/services/habits.service'
 import { HabitsView } from '@/features/habits'
